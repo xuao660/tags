@@ -1,9 +1,10 @@
+// Set config defaults when creating the instance
 import axios from "axios";
 
-const myAxios = axios.create({
-    baseURL: 'http://localhost:8080/api',
-    withCredentials: true
 
+//定义全局请求头，把axios想象成一个类，myAxios是我们自定义的实例
+const myAxios = axios.create({
+    baseURL: 'http://localhost:8080/api'
 });
 
 // 添加请求拦截器
@@ -26,4 +27,7 @@ axios.interceptors.response.use(function (response) {
     // 对响应错误做点什么
     return Promise.reject(error);
 });
-export default myAxios;
+
+
+
+export default myAxios

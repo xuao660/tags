@@ -14,8 +14,10 @@
 <script setup lang="ts">
 
 import {useRouter} from "vue-router";
+import myAxios from "../plugins/axios";
+import {ref} from "vue";
 
-const editUser = {
+let editUser = ref({
   id :"1",
   username: "谢谢哦",
   userAccount:'xxa',
@@ -24,7 +26,20 @@ const editUser = {
   phone:'1235',
   email:'12@33qq.com',
   createTime:new Date()
+});
+const user = await myAxios.get('/user/current')
+    .then(function (response) {
+      // handle success
+      console.log(response);
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    });
+if(user){
+  editUser = user;
 }
+
 const router = useRouter();
 const toEditUser =(editKey: string, editName: string,editValue: string)=>{
   router.push({
