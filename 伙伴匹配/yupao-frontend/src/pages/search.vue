@@ -29,19 +29,24 @@
       v-model:main-active-index="activeIndex"
       :items="tagList"
   />
+  <div style="padding: 20px">
+    <van-button  block type="primary" @click="searchUserByTags()" >主要按钮</van-button>
+
+  </div>
 
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import { showToast } from 'vant';
+import {useRouter} from "vue-router";
 const initTagList = [
   {
-    text: '浙江',
+    text: '编程语言',
     children: [
-      { text: '杭州', id: '杭州' },
-      { text: '温州', id: '温州' },
-      { text: '宁波', id: '宁波' },
+      { text: 'Java', id: 'Java' },
+      { text: 'C++', id: 'C++' },
+      { text: 'C#', id: 'C#' },
     ],
   },
   {
@@ -61,6 +66,11 @@ const initTagList = [
     ],
   },
 ];
+const router = useRouter();
+//选中的标签
+const activeIds = ref([]);
+const activeIndex = ref(0);
+//全部标签
 const tagList = ref(initTagList);
 const searchText = ref('');
 const onSearch = (val) =>{
@@ -86,9 +96,17 @@ const tagClose = (tag) => {
   })
 };
 
+const searchUserByTags = () =>{
+  router.push({
+    path:"/user/list",
+    query:{
+      tags: activeIds.value
+    }
+  })
+}
 
-const activeIds = ref([]);
-const activeIndex = ref(0);
+
+
 
 </script>
 

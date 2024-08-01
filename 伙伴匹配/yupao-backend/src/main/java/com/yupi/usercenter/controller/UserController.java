@@ -23,12 +23,6 @@ import java.util.stream.Collectors;
 import static com.yupi.usercenter.contant.UserConstant.ADMIN_ROLE;
 import static com.yupi.usercenter.contant.UserConstant.USER_LOGIN_STATE;
 
-/**
- * 用户接口
- *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
- */
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -157,9 +151,8 @@ public class UserController {
         User user = (User) userObj;
         return user != null && user.getUserRole() == ADMIN_ROLE;
     }
-
     @GetMapping("searchUserByTags")
-    public BaseResponse<List<User>> searchUserByTags(List<String> tagNameList) {
+    public BaseResponse<List<User>> searchUserByTags(@RequestParam(required = false) List<String> tagNameList) {
         if(CollectionUtils.isEmpty(tagNameList)){
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
