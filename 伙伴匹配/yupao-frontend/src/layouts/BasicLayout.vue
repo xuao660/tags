@@ -24,6 +24,7 @@
 
 <!-- 页面下方通用组件。v-model 指令会将 <van-tabbar> 组件的 name 属性绑定到 active 变量-->
   <van-tabbar route @change="onChange">
+    <van-tabbar-item replace to="/user/login" icon="home-o" name="index">登录</van-tabbar-item>
     <van-tabbar-item replace to="/" icon="home-o" name="index">主页</van-tabbar-item>
     <van-tabbar-item replace to="/labels" icon="search" name="labels">标签</van-tabbar-item>
     <van-tabbar-item replace to="/team" icon="friends-o" name="team">队伍</van-tabbar-item>

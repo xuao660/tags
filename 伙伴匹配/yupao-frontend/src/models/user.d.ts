@@ -1,4 +1,4 @@
-export type user = {
+export type UserType = {
     id :number;
     username: string;
     userAccount:string

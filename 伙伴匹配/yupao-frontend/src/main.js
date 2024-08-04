@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import  { Icon,Button,NavBar,Tabbar, TabbarItem ,Search,Divider ,Tag, Col, Row  } from 'vant';
+import  { Icon,Button,NavBar,Tabbar, TabbarItem ,Search,Divider ,Tag, Col, Row ,Toast  } from 'vant';
 import * as VueRouter from 'vue-router'
 //引用路由信息文件
 import routes from "./config/route.ts"
@@ -22,4 +22,6 @@ app.use(Divider);
 app.use(Tag);
 app.use(Col);
 app.use(Row);
+app.use(Toast);
+
 app.mount('#app')

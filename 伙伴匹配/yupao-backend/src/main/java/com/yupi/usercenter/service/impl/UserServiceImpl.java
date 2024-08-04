@@ -22,6 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static com.yupi.usercenter.contant.UserConstant.ADMIN_ROLE;
 import static com.yupi.usercenter.contant.UserConstant.USER_LOGIN_STATE;
 
 
@@ -224,6 +225,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             return new ArrayList<>();
         }
         return users;
+    }
+
+    @Override
+    public int updateUser(User user) {
+        int i = userMapper.updateById(user);
+        return i;
+    }
+
+    @Override
+    public User getLoginUser(HttpServletRequest request){
+        Object attribute = request.getSession().getAttribute(USER_LOGIN_STATE);
+        User loginUser = (User) attribute;
+        if(loginUser == null){
+            throw new BusinessException(ErrorCode.NO_AUTH);
+        }
+        return loginUser;
+    }
+
+    @Override
+    public boolean isAdmin(HttpServletRequest request) {
+        // 仅管理员可查询
+        Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
+        User user = (User) userObj;
+        return user != null && user.getUserRole() == ADMIN_ROLE;
     }
 }
 
