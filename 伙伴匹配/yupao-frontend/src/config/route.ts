@@ -5,6 +5,7 @@ import index from '../pages/index.vue'
 import search from '../pages/search.vue'
 import userEdit from '../pages/userEdit.vue'
 import userList from '../pages/userList.vue'
+import userLogin from '../pages/userLogin.vue'
 
 //定义路由信息
 const routes = [
@@ -15,6 +16,7 @@ const routes = [
     { path: '/search', component: search },
     { path: '/user/edit', component: userEdit },
     { path: '/user/list', component: userList },
+    { path: '/user/login', component: userLogin },
 
 ]
 //将当前route文件暴露出去，方便main.js引用

@@ -19,17 +19,45 @@
 </template>
 
 <script setup>
-import {useRoute} from "vue-router";
+import {useRoute,useRouter} from "vue-router";
 import {ref} from "vue";
+import {showSuccessToast,showFailToast} from "vant";
+import {getCurrentUser} from "../state/User";
+import myAxios from "../plugins/axios";
+
 const route = useRoute();
+const router = useRouter();
+
 const editUser = ref({
   editKey:route.query.editKey,
   editName:route.query.editName,
   editValue:route.query.editValue,
 
 })
-const onSubmit = (values) => {
-  console.log('submit', values);
+console.log('editValue:', editUser.value.editValue);
+
+
+
+const onSubmit = async (values) => {
+  const currentUser = await getCurrentUser();
+  if (currentUser) {
+    console.log("当前用户：", currentUser);
+  } else {
+    showFailToast("用户未登录");
+    router.push('/user/login');
+  }
+  const res = await myAxios.post('/user/update', {
+    id: currentUser.id,
+    [editUser.value.editKey]:editUser.value.editValue
+  });
+  if(res.code === 0 && res.data >0){
+
+    showSuccessToast("修改成功");
+    router.back();
+
+  }else{
+    showFailToast("修改失败")
+  }
 };
 </script>
 

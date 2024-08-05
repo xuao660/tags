@@ -10,6 +10,10 @@ spring:
       matching-strategy: ant_path_matcher
   # DataSource Config
   datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/friend
+#    username: root
+#    password: 2017083122xuao
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://123.56.41.119:3306/user_center?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
     username: dog
@@ -19,6 +23,7 @@ spring:
     timeout: 86400
     #session存入redis
     store-type: redis
+
   redis:
     port: 6379
     host: 123.56.41.119
@@ -28,6 +33,9 @@ server:
   port: 8080
   servlet:
     context-path: /api
+    session:
+      cookie:
+        domain: 127.0.0.1
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false

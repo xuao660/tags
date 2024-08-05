@@ -6,6 +6,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+import static com.yupi.usercenter.contant.UserConstant.ADMIN_ROLE;
+import static com.yupi.usercenter.contant.UserConstant.USER_LOGIN_STATE;
+
 /**
  * 用户服务
  *
@@ -59,4 +62,29 @@ public interface UserService extends IService<User> {
      * @return
      */
     public List<User> searchUserByTags(List<String> tagNameList);
+
+
+    /**
+     * 修改用户信息
+     * @param user
+     * @return
+     */
+    public int updateUser(User user);
+
+
+    /**
+     * 获取当前登录用户
+     * @param request
+     * @return
+     */
+    public User getLoginUser(HttpServletRequest request);
+
+
+    /**
+     * 是否为管理员
+     *
+     * @param request
+     * @return
+     */
+     boolean isAdmin(HttpServletRequest request);
 }
