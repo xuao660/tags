@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-import static com.yupi.usercenter.contant.UserConstant.ADMIN_ROLE;
-import static com.yupi.usercenter.contant.UserConstant.USER_LOGIN_STATE;
 
 /**
  * 用户服务

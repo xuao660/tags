@@ -1,18 +1,13 @@
 <template>
 
-  <van-card
-      v-for="user in userList"
-      :desc=user.tags
-      :title="`${user.username}(${user.planetCode})`"
-      thumb="../assets/vue.svg"
-  >
+ <user-list :user-list="userList">
     <template #tags>
       <van-tag plain type="primary" v-for="tag in JSON.parse(user.tags)" style="margin-top: 8px;margin-right: 8px">{{tag}}</van-tag>
     </template>
     <template #footer>
       <van-button size="mini">联系他</van-button>
     </template>
-  </van-card>
+ </user-list>
 <van-empty v-if="!userList || userList.length <1 " description="搜索结果为空"></van-empty>
 
 </template>
@@ -40,7 +35,7 @@ onMounted(async () => {
     }
   }).then(function (response) {
     console.log('/user/searchUserByTags success', response);
-    return response.data.data;
+    return response.data;
   })
   .catch(function (error) {
     console.log('/user/searchUserByTags error', error);

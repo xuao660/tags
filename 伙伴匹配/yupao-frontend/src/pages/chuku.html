@@ -1,0 +1,253 @@
+<style>
+    .normal-container {
+        font-size: 14px;
+        margin-left: 20px;
+        /*margin: 0 auto;*/
+        width: 1080px;
+    }
+
+    .layui-input,
+    .layui-textarea {
+        border: none;
+        border-bottom: 1px solid #d4d4d4;
+    }
+
+    .normal-container .normal-title {
+        text-align: center;
+        color: #333;
+        font-weight: bold;
+        color: #333;
+        padding: 0;
+    }
+
+    .normal-model .normal-model-top {
+        border-bottom: 2px solid #3370ff;
+        display: flex;
+        justify-content: space-between;
+        height: 40px;
+        align-items: center;
+        padding-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    .normal-model .normal-model-top.flexible {
+        cursor: pointer;
+    }
+
+    .normal-model .normal-model-tip {
+        font-weight: bold;
+        color: #000;
+    }
+
+    .normal-model .normal-form-li {
+        display: flex;
+    }
+
+    .normal-form-li .layui-form-item {
+        flex: 1;
+        margin-bottom: 10px;
+    }
+
+    .normal-form-li .layui-form-label {
+        width: 105px;
+        padding: 0 0 0 10px;
+        color: #666;
+        text-align: left;
+        height: auto;
+    }
+
+    .normal-form-li .layui-input:hover,
+    .layui-textarea:hover {
+        border-color: #3370ff !important;
+    }
+
+    .normal-form-li .layui-input-block {
+        margin-left: 115px;
+        position: relative;
+    }
+
+    .input-r {
+        top: 0px;
+        height: 30px;
+        right: 5px;
+        line-height: 30px;
+        position: absolute;
+    }
+
+    .input-r i {
+        font-size: 20px;
+        color: #3370ff;
+    }
+
+    .dataModeBox {
+        height: 30px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    [mtb-btn-fn] {
+        background: #fff;
+        color: #3370ff;
+        border: 1px solid #3370ff;
+        border-radius: 28px;
+    }
+
+    [mtb-btn-fn]:hover {
+        color: #fff;
+        background: #3370ff;
+    }
+
+    .layui-table td {
+        padding: 4px;
+    }
+</style>
+<div class="normal-container layui-form">
+    <h2 class="normal-title">员工请假表</h2>
+    <div class="normal-model">
+        <div class="normal-model-top ">
+            <div class="normal-model-tip">基础信息</div>
+        </div>
+        <div class="normal-model-cont">
+            <div class="normal-form-li">
+                <div class="layui-form-item"><label class="layui-form-label">申请部门：</label>
+                    <div class="layui-input-block"><input name="applydepid" class="layui-input layui-input-sm" id="applydepid" type="text" placeholder="" data-itemcode="26e4f1eb-adf3-421a-bb39-3f8503942244"> <input name="applydepcode" class="layui-input layui-input-sm" id="applydepcode" type="text" placeholder="" data-itemcode="7958c8c0-2f3f-4495-85ba-1620ed276377"> <input name="applydepname" class="layui-input layui-input-sm" id="applydepname" type="text" placeholder="" data-itemcode="1bfd9474-5c91-4fc4-9c42-e46b8383c6e8"> <input name="applyorgid" class="layui-input layui-input-sm" id="applyorgid" type="text" placeholder="" data-itemcode="43748a7f-1c6c-49bf-9298-bb0b72df12fe"> <input name="applyorgcode" class="layui-input layui-input-sm" id="applyorgcode" type="text" placeholder="" data-itemcode="44454519-5c5b-4284-8b43-7cd6bc0c30b7"> <input name="applyorgname" class="layui-input layui-input-sm" id="applyorgname" type="text" placeholder="" data-itemcode="b3f4419c-45c2-4f91-b6d1-8b4aa60a1376"> <input name="field5" class="layui-input layui-input-sm" id="field5" type="text" placeholder="" data-itemcode="5b06f2aa-d010-4e70-b925-8689fc0d6dbe"> <span class="input-r"> <i class="iconfont icon-shenqingbumen"></i></span></div>
+                </div>
+                <div class="layui-form-item"><label class="layui-form-label">申请人：</label>
+                    <div class="layui-input-block"><input name="applyemployeeid" class="layui-input layui-input-sm" id="applyemployeeid" type="text" placeholder="" data-itemcode="5143a61d-4c40-4ada-813e-d4afc09554d2"> <input name="applyemployeename" class="layui-input layui-input-sm" id="applyemployeename" type="text" placeholder="" data-itemcode="be10dd2d-2fca-4173-a630-74bc945dd11c"> <span class="input-r"> <i class="iconfont icon-shenqingren"> </i></span></div>
+                </div>
+                <div class="layui-form-item"><label class="layui-form-label">申请时间：</label>
+                    <div class="layui-input-block"><input name="applytime" class="layui-input layui-input-sm" id="applytime" type="text" data-itemcode="b0fb63c8-8933-439c-b569-4b4bb59aa849"> <span class="input-r"> <i class="iconfont icon-rili"></i></span></div>
+                </div>
+                <div class="layui-form-item"><label class="layui-form-label">业务单号：</label>
+                    <div class="layui-input-block"><input type="text" id="businessid" name="businessid" class="layui-input layui-input-sm" data-itemcode="01f744ca-5e9a-4f63-9aa3-ff3a10b17593"> <input name="field2" class="layui-input layui-input-sm" id="field2" type="text" placeholder="" data-itemcode="3df1d84f-277b-46b3-b3ce-751538bedbef"> <span class="input-r"> <i class="iconfont icon-yewudanhao"> </i></span></div>
+                </div>
+            </div>
+            <div class="normal-form-li">
+                <div class="layui-form-item"><label class="layui-form-label">员工姓名：</label>
+                    <div class="layui-input-block"><input name="employeecode" class="layui-input layui-input-sm bindDataSource" id="employeecode" type="text" placeholder="员工编码" data-itemcode="966355da-b961-43a6-b9d0-98050bd80e8b"> <input name="empid" class="layui-input layui-input-sm bindDataSource" id="empid" type="text" placeholder="员工ID" data-itemcode="d49ba2b4-7e47-47ef-9faf-f0765da243ef" readonly="readonly"> <input name="employeename" class="layui-input layui-input-sm bindDataSource" id="employeename" type="text" placeholder="员工姓名" autocomplete="off" lay-verify="title" data-itemcode="cb59e1f3-12c9-4d52-89d0-98eb401f4433" readonly="readonly"></div>
+                </div>
+                <div class="layui-form-item"><label class="layui-form-label">工作年限：</label>
+                    <div class="layui-input-block"><input type="text" id="workyear" name="workyear" class="layui-input layui-input-sm bindDataSource" data-itemcode="df8025f3-7271-4332-ab7e-1f22f0adf12a" readonly="readonly"></div>
+                </div>
+                <div class="layui-form-item"><label class="layui-form-label">职位：</label>
+                    <div class="layui-input-block"><input type="text" id="positionname" name="positionname" class="layui-input layui-input-sm" data-itemcode="742e305b-00a2-45f3-9928-b8c5869f5f47"></div>
+                </div>
+                <div class="layui-form-item"><label class="layui-form-label">人员级别：</label>
+                    <div class="layui-input-block"><input type="text" id="careerpath" name="careerpath" class="layui-input layui-input-sm" data-itemcode="d31ccc6a-61ce-4151-a0af-d170a7f8ab89"></div>
+                </div>
+            </div>
+            <div class="normal-form-li layui-hide">
+                <div class="layui-form-item"><label class="layui-form-label">工龄计算时间：</label>
+                    <div class="layui-input-block"><input type="text" id="workdate" name="workdate" class="layui-input layui-input-sm bindDataSource" data-itemcode="62e604ab-a941-4815-8752-fcc95d37c2c7"></div>
+                </div>
+            </div>
+            <div class="normal-form-li">
+                <div class="layui-form-item"><label class="layui-form-label">年休假天数：</label>
+                    <div class="layui-input-block"><input type="text" id="annuallevdays" name="annuallevdays" class="layui-input layui-input-sm bindDataSource" data-itemcode="1759361c-5eb2-434c-b585-5c6583f7b36a" readonly="readonly"></div>
+                </div>
+                <div class="layui-form-item"><label class="layui-form-label">已休年假：</label>
+                    <div class="layui-input-block"><input type="text" id="annualleved" name="annualleved" class="layui-input layui-input-sm bindDataSource" data-itemcode="affb9a8b-d178-4f4e-a90c-db32ce2b6133" readonly="readonly"></div>
+                </div>
+                <div class="layui-form-item"><label class="layui-form-label">可休年假：</label>
+                    <div class="layui-input-block"><input type="text" id="remaindays" name="remaindays" class="layui-input layui-input-sm bindDataSource" data-itemcode="9ba5681f-632d-415d-9807-a4b8c7841c95" readonly="readonly"> <input type="text" id="bcannualleve" name="bcannualleve" placeholder="本次年休天数" class="layui-input layui-input-sm" data-itemcode="af923cba-0a97-4dbe-b40e-a5161eecf6f9"></div>
+                </div>
+                <div class="layui-form-item"><label class="layui-form-label">可调休天数：</label>
+                    <div class="layui-input-block"><input type="text" id="ktxdays" name="ktxdays" class="layui-input layui-input-sm" data-itemcode="90bc50e3-e7c7-4a3a-a923-3d6998c5b7a1"> <input type="text" id="bctxdays" name="bctxdays" placeholder="本次调休天数" class="layui-input layui-input-sm" data-itemcode="a195ba9d-274f-422b-aa97-0162213543df"></div>
+                </div>
+            </div>
+            <div class="normal-form-li  layui-hide">
+                <div class="layui-form-item"><label class="layui-form-label">外出地点：</label>
+                    <div class="layui-input-block"><input id="destination" name="destination" class="layui-input layui-input-sm" type="text" data-itemcode="e2e3293d-9b90-47d7-bed6-a8cd7321d607"></div>
+                </div>
+            </div>
+            <div class="normal-form-li">
+                <div class="layui-form-item"><label class="layui-form-label">请假原因：</label>
+                    <div class="layui-input-block"><textarea id="remarkh" name="remarkh" class="layui-textarea" placeholder="请填写外出地点" data-itemcode="4cbf94a2-a528-4438-9618-d5317c9074fa"></textarea></div>
+                </div>
+            </div>
+            <div class="normal-form-li">
+                <div class="layui-form-item" style="flex-basis: auto; width: 270px; flex: 0;"><label class="layui-form-label">请假类型：</label>
+                    <div class="layui-input-block" style="width: 155px;"><input name="leavetype" class="layui-input layui-input-sm bindDataSource" id="leavetype" type="text" placeholder="请先选择请假类型" data-itemcode="1c5d19bb-4c3b-4d95-83d6-490454889d85"> <input name="leavetypecode" class="layui-input layui-input-sm bindDataSource" id="leavetypecode" type="text" placeholder="" data-itemcode="3ba42f72-94d8-4df7-b4a9-6749d2607483"></div>
+                </div>
+                <div class="layui-form-item" style="flex-basis: auto; width: 270px; flex: 0;"><label class="layui-form-label">请假天数：</label>
+                    <div class="layui-input-block" style="width: 155px;"><input name="leavedays" class="layui-input layui-input-sm" id="leavedays" required="" type="text" placeholder="" autocomplete="off" lay-verify="required" data-itemcode="09c726c3-af33-4c53-b464-6f9d3455e12e"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="normal-model">
+        <div class="normal-model-top ">
+            <div class="normal-model-tip">请假信息</div>
+            <div class="normal-model-btns mtb-tr-btns"><button mtb-btn-fn="AddRow" mtb="kq_leave_line" type="button" class="layui-btn">增行</button> <button mtb-btn-fn="DelRow" mtb="kq_leave_line" type="button" class="layui-btn">删行</button> <button mtb-btn-fn="CopyRow" mtb="kq_leave_line" type="button" class="layui-btn">复制</button> <button mtb-btn-fn="UpRow" mtb="kq_leave_line" type="button" class="layui-btn">上移</button> <button mtb-btn-fn="DownRow" mtb="kq_leave_line" type="button" class="layui-btn">下移</button></div>
+        </div>
+        <div class="normal-model-cont">
+            <div class="mtb-box">
+                <table class="layui-table">
+                    <thead>
+                    <tr style="height: 30px;">
+                        <th style="width: 12%;">请假类别</th>
+                        <th style="width: 12%;">开始时间</th>
+                        <th style="width: 8.5%;">开始班次</th>
+                        <th style="width: 12%;">结束时间</th>
+                        <th style="width: 8.5%;">结束班次</th>
+                        <th style="width: 7%;">天数</th>
+                        <th style="width: 40%;">原因事项</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr id="" style="height: 25px;">
+                        <td><input name="ltype" class="layui-input layui-input-sm layui-input-sm bindDataSource" id="ltype" type="text" data-itemcode="1a3e67c2-cb76-4324-aa0e-f3800f7349da"> <input name="typecode" class="layui-input layui-input-sm bindDataSource" id="typecode" type="text" data-itemcode="0b485ac2-27af-47e9-92df-95b24d5b5a29"> <input name="typename" class="layui-input layui-input-sm bindDataSource" id="typename" type="text" data-itemcode="a4cd6332-39bf-455b-8bd9-63da2cb3e57e"></td>
+                        <td><input name="startdate" id="startdate" class="layui-input layui-input-sm bindDataSource" type="text" data-itemcode="b9cc72d8-36b4-48a1-81ea-5c2b5232dac0"></td>
+                        <td><select name="startshift" id="startshift" type="text" data-itemcode="579edce9-569c-4bcf-9202-157c15999f6e">
+                            <option value=""></option>
+                            <option value="上班">上午</option>
+                            <option value="下班">下午</option>
+                        </select></td>
+                        <td><input name="enddate" id="enddate" class="layui-input layui-input-sm bindDataSource" type="text" data-itemcode="104d45e4-a890-4ec2-82cb-2c4a84cbd81e"></td>
+                        <td><select name="endshift" id="endshift" type="text" data-itemcode="a006bac9-465e-42bf-a144-5a129ca14b89">
+                            <option value=""></option>
+                            <option value="上班">上午</option>
+                            <option value="下班">下午</option>
+                        </select></td>
+                        <td><input name="daycount" class="layui-input layui-input-sm" id="daycount" type="text" data-itemcode="08a76ffd-146a-4aa1-92ef-556d4b327b9a"></td>
+                        <td><input name="remark" class="layui-input layui-input-sm" id="remark" type="text" data-itemcode="0614de4e-2d23-4dc1-8b83-b2cc0ff004c6"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- 附件 -->
+    <div class="normal-model">
+        <div class="normal-model-top flexible">
+            <div class="normal-model-tip">附件</div>
+        </div>
+        <div class="normal-model-cont">
+            <div id="bussinessAttach" style="position: relative;"><button id="bussinessAttachBtn" type="button" class="layui-btn" data-itemcode="bfe132c4-f7e6-4da7-9e26-e22651d4adb1"> <i class="iconfont icon-c046yunshangchuan"></i> 添加附件</button> <input name="bussinessAttachInput" id="bussinessAttachInput" class="hiddeninput" type="text" value="" data-inputtype="hidden" data-itemcode="97823d02-762a-44e4-9497-b6a70df2634a">
+                <div id="bussinessAttachCont"></div>
+            </div>
+        </div>
+    </div>
+    <!-- 附件结束 -->
+    <div class="normal-model approval_info">
+        <div class="normal-model-top ">
+            <div class="normal-model-tip">审核信息</div>
+        </div>
+        <div class="normal-model-cont">
+            <div class="normal-form-li">
+                <div class="layui-form-item"><label class="layui-form-label">部长/主任/书记/副总/总经理审核</label>
+                    <div class="layui-input-block"><textarea type="text" id="approval1" name="approval1" class="layui-textarea hide_null" data-itemcode="7ec49dae-7e2e-42b2-ba8a-1fd0ff85551e"></textarea></div>
+                </div>
+            </div>
+            <div class="normal-form-li">
+                <div class="layui-form-item"><label class="layui-form-label">安环/工会审核</label>
+                    <div class="layui-input-block"><textarea type="text" id="approval2" name="approval2" class="layui-textarea hide_null" data-itemcode="5849e5cf-60fd-4552-950f-25eb6f62ad5f"></textarea></div>
+                </div>
+            </div>
+            <div class="normal-form-li">
+                <div class="layui-form-item"><label class="layui-form-label">行政部归档</label>
+                    <div class="layui-input-block"><textarea type="text" id="approval3" name="approval3" class="layui-textarea hide_null" data-itemcode="f84a367e-3859-4bac-a024-b7a08583a046"></textarea></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

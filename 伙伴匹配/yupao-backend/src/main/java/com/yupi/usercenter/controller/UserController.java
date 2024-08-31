@@ -1,7 +1,9 @@
 package com.yupi.usercenter.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import com.yupi.usercenter.common.BaseResponse;
 import com.yupi.usercenter.common.ErrorCode;
@@ -139,7 +141,16 @@ public class UserController {
     }
 
 
-
+    @GetMapping("/recommand")
+    public BaseResponse<List<User>> recommand(long pageNum , long pageSize) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+//        List<User> userList = userService.list(queryWrapper);
+        //pageNum --页码  pageSize --页数据量
+        IPage<User> page = new Page<>(pageNum, pageSize);
+        IPage<User> userList = userService.page(page, queryWrapper);
+        List<User> list = userList.getRecords().stream().map(user -> userService.getSafetyUser(user)).collect(Collectors.toList());
+        return ResultUtils.success(list);
+    }
     @GetMapping("searchUserByTags")
     public BaseResponse<List<User>> searchUserByTags(@RequestParam(required = false) List<String> tagNameList) {
         if(CollectionUtils.isEmpty(tagNameList)){
