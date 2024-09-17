@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yupi.usercenter.mapper.TeamMapper">
+
+    <resultMap id="BaseResultMap" type="com.yupi.usercenter.model.domain.Team">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="teamName" column="teamName" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="maxNum" column="maxNum" jdbcType="INTEGER"/>
+            <result property="expireTime" column="expireTime" jdbcType="TIMESTAMP"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="userID" column="userID" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,teamName,description,
+        maxNum,expireTime,password,
+        userID,status,createTime,
+        updateTime,isDelete
+    </sql>
+
+   <!-- 定义TeamUserVO的结果映射 -->
+    <resultMap id="TeamUserVOResultMap" type="com.yupi.usercenter.model.domain.vo.TeamUserVO">
+        <id property="id" column="id" />
+        <result property="teamName" column="teamName" />
+        <result property="description" column="description" />
+        <result property="maxNum" column="maxNum" />
+        <result property="expireTime" column="expireTime" />
+        <result property="userID" column="userID" />
+        <result property="status" column="status" />
+        <result property="captainId" column="captainId" />
+
+        <!-- 映射users属性 -->
+        <collection property="users" ofType="com.yupi.usercenter.model.domain.vo.UserVO">
+            <id property="id" column="userId" />
+            <result property="username" column="username" />
+            <result property="userAccount" column="userAccount" />
+            <!-- 根据实际情况添加其他UserVO属性的映射 -->
+        </collection>
+    </resultMap>
+
+    <!-- 使用定义好的结果映射执行查询 -->
+    <select id="selectListByTeams" resultMap="TeamUserVOResultMap">
+        SELECT
+        t.id,
+        t.teamName,
+        t.description,
+        t.maxNum,
+        t.expireTime,
+        t.status,
+        t.captainId,
+        u.id AS userId,
+        u.username,
+        u.userAccount
+        FROM
+        team t
+        JOIN userteam ut ON t.id = ut.teamId
+        JOIN users u ON ut.userId = u.id
+        WHERE
+        t.id IN
+        <foreach item="team" collection="teams" open="(" separator="," close=")">
+            #{team.id}
+        </foreach>
+    </select>
+</mapper>
