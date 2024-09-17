@@ -11,12 +11,14 @@ import com.yupi.usercenter.service.UserService;
 import com.yupi.usercenter.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,7 +35,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Resource
     private UserMapper userMapper;
-
+@Resource
+    StringRedisTemplate stringRedisTemplate;
 
     /**
      * 盐值，混淆密码
@@ -138,7 +141,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         queryWrapper.eq("userPassword", encryptPassword);
         User user = userMapper.selectOne(queryWrapper);
         // 用户不存在
-        if (user == null) {
+        if (user     == null) {
             log.info("user login failed, userAccount cannot match userPassword");
             return null;
         }
@@ -235,10 +238,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Override
     public User getLoginUser(HttpServletRequest request){
-        Object attribute = request.getSession().getAttribute(USER_LOGIN_STATE);
+
+
+        HttpSession session = request.getSession();
+        String sessionId = session.getId();
+        Boolean aBoolean = stringRedisTemplate.hasKey("spring:session:sessions:" + sessionId);
+        Object attribute = session.getAttribute(USER_LOGIN_STATE);
         User loginUser = (User) attribute;
         if(loginUser == null){
-            throw new BusinessException(ErrorCode.NO_AUTH);
+            throw new BusinessException(ErrorCode.NOT_LOGIN);
         }
         return loginUser;
     }
@@ -250,5 +258,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User user = (User) userObj;
         return user != null && user.getUserRole() == ADMIN_ROLE;
     }
+
 }
 

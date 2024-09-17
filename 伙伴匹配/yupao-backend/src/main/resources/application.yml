@@ -36,6 +36,8 @@ spring:
     host: 123.56.41.119
     password: 123456
     database: 0
+  main:
+    allow-bean-definition-overriding: true
 server:
   port: 8080
   servlet:
@@ -44,6 +46,7 @@ server:
       cookie:
         domain: 127.0.0.1
 mybatis-plus:
+  type-aliases-package: com.yupi.usercenter.model.domain
   configuration:
     map-underscore-to-camel-case: false
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 打印查询日志

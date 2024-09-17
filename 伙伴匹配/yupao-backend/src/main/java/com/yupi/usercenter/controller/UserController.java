@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ser.Serializers;
+import com.google.gson.Gson;
 import com.yupi.usercenter.common.BaseResponse;
 import com.yupi.usercenter.common.ErrorCode;
 import com.yupi.usercenter.common.ResultUtils;
@@ -14,13 +15,17 @@ import com.yupi.usercenter.model.domain.User;
 import com.yupi.usercenter.model.domain.request.UserLoginRequest;
 import com.yupi.usercenter.model.domain.request.UserRegisterRequest;
 import com.yupi.usercenter.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.yupi.usercenter.contant.UserConstant.ADMIN_ROLE;
@@ -28,11 +33,15 @@ import static com.yupi.usercenter.contant.UserConstant.USER_LOGIN_STATE;
 
 @RestController
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
 
     @Resource
     private UserService userService;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
+    private static final Gson gson = new Gson();
     /**
      * 用户注册
      *
@@ -142,13 +151,27 @@ public class UserController {
 
 
     @GetMapping("/recommand")
-    public BaseResponse<List<User>> recommand(long pageNum , long pageSize) {
+    public BaseResponse<List<User>> recommand(HttpServletRequest request,long pageNum , long pageSize) {
+        String userId = userService.getLoginUser(request).getId().toString();
+        String key = "yupao:user:recommend:"+userId;
+        String recommends = redisTemplate.opsForValue().get(key);
+        if(StringUtils.isNotBlank(recommends)){
+            List<User> list = gson.fromJson(recommends, List.class);
+            return ResultUtils.success(list);
+        }
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 //        List<User> userList = userService.list(queryWrapper);
-        //pageNum --页码  pageSize --页数据量
+        //后端分页查询 pageNum --页码  pageSize --页数据量
         IPage<User> page = new Page<>(pageNum, pageSize);
         IPage<User> userList = userService.page(page, queryWrapper);
+        //关键信息脱敏
         List<User> list = userList.getRecords().stream().map(user -> userService.getSafetyUser(user)).collect(Collectors.toList());
+        String json = gson.toJson(list);
+        try {
+            redisTemplate.opsForValue().set(key,json,30l, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            log.info("redis set error",e.getMessage());
+        }
         return ResultUtils.success(list);
     }
     @GetMapping("searchUserByTags")
