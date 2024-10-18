@@ -121,7 +121,6 @@ public class UserController {
         return ResultUtils.success(safetyUser);
     }
 
-    // https://yupi.icu/
 
     @GetMapping("/search")
     public BaseResponse<List<User>> searchUsers(String username, HttpServletRequest request) {
