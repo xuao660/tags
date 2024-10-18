@@ -1,12 +1,13 @@
 package com.yupi.usercenter.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yupi.usercenter.model.domain.Team;
 import com.yupi.usercenter.model.domain.User;
 import com.yupi.usercenter.model.domain.dto.TeamQuery;
+import com.yupi.usercenter.model.domain.request.TeamUpdateRequest;
 import com.yupi.usercenter.model.domain.vo.TeamUserVO;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -19,4 +20,16 @@ public interface TeamService extends IService<Team> {
     boolean addTeam(Team team, User loginUser);
 
     List<TeamUserVO> listTeams(TeamQuery teamQuery, boolean isAdmin);
+
+    boolean updateTeamById(TeamUpdateRequest team, HttpServletRequest request);
+
+    boolean joinTeam(Long teamId, String password,HttpServletRequest request);
+
+    boolean exitTeam(Long teamId, User loginUser);
+
+    boolean deleteTeam(Long teamId,HttpServletRequest request);
+
+    public void testA(String param);
+
+    public void testB(String param);
 }
