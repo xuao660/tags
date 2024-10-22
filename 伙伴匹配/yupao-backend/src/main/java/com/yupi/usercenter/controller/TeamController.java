@@ -11,6 +11,7 @@ import com.yupi.usercenter.model.domain.User;
 import com.yupi.usercenter.model.domain.dto.TeamQuery;
 import com.yupi.usercenter.model.domain.request.TeamAddRequest;
 import com.yupi.usercenter.model.domain.request.TeamIdRequest;
+import com.yupi.usercenter.model.domain.request.TeamJoinRequest;
 import com.yupi.usercenter.model.domain.request.TeamUpdateRequest;
 import com.yupi.usercenter.model.domain.vo.TeamUserVO;
 import com.yupi.usercenter.service.TeamService;
@@ -79,7 +80,9 @@ public class TeamController {
     }
 
     @PostMapping("join")
-    public BaseResponse<Boolean> joinTeam(Long teamId, String password,HttpServletRequest request){
+    public BaseResponse<Boolean> joinTeam(@RequestBody TeamJoinRequest param, HttpServletRequest request){
+        String password =param.getPassword();
+        Long teamId = param.getTeamId();
 //        2、校验参数是否为空，参数是否有效
         if(teamId == null || teamId<=0){
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -133,7 +136,7 @@ public class TeamController {
         List<TeamUserVO> list = teamService.listTeams(teamQuery,isAdmin);
         //返回内容
         if(CollectionUtils.isEmpty(list) ){
-            throw new BusinessException(ErrorCode.NULL_ERROR,"查询数据为空");
+            throw   new BusinessException(ErrorCode.NULL_ERROR,"查询数据为空");
         }
         return ResultUtils.success(list);
     }

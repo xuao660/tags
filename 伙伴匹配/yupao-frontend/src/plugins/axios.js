@@ -1,6 +1,6 @@
 // Set config defaults when creating the instance
 import axios from "axios";
-
+import {useRouter} from "vue-router";
 
 //定义全局请求头，把axios想象成一个类，myAxios是我们自定义的实例
 const myAxios = axios.create({
@@ -20,8 +20,18 @@ myAxios.interceptors.request.use(function (config) {
 
 // 添加响应拦截器
 myAxios.interceptors.response.use(function (response) {
-    // 对响应数据做点什么
-    console.log('接收响应：',response.data)
+    const router = useRouter();
+
+    if(response.data ){
+        // 对响应数据做点什么
+        console.log('接收响应：',response.data)
+        if(response.data.code === 40100){
+            router.push({
+                path : "/user/login"
+            });
+        }
+    }
+
 
     return response.data;
 }, function (error) {

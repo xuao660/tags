@@ -161,7 +161,9 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team>
         queryWrapper.and(qw->qw.gt("expireTime",new Date()).or().isNull("expireTime"));
         List<Team> list = this.list(queryWrapper);
         List<TeamUserVO> teams = new ArrayList<>();
-
+        if(list == null || list.size() == 0){
+            return teams;
+        }
         Page<TeamUserVO> teamUserPage = new Page<>(1,10);
         IPage<TeamUserVO> iPage= teamMapper.selectListByTeams(list,teamUserPage);
         teams = iPage.getRecords();

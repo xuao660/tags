@@ -13,7 +13,7 @@ import teamPage from '../pages/teamPage.vue'
 const routes = [
     { path: '/', component: index },
     { path: '/labels', component: labels },
-    { path: '/team', component: teamPage },
+    { path: '/team', component: team },
     { path: '/user', component: user },
     { path: '/search', component: search },
     { path: '/user/edit', component: userEdit },
