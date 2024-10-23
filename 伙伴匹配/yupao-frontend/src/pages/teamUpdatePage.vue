@@ -2,14 +2,14 @@
   <van-form @submit="onSubmit">
     <van-cell-group inset>
       <van-field
-          v-model="addTeamData.teamName"
+          v-model="updateTeamData.teamName"
           name="teamName"
           label="队伍名称"
           placeholder="队伍名称"
           :rules="[{ required: true, message: '请输入队伍名' }]"
       />
       <van-field
-          v-model="addTeamData.description"
+          v-model="updateTeamData.description"
           rows = "3"
           autosize
           type="textarea"
@@ -20,7 +20,7 @@
       />
       <van-field name="stepper" label="队伍人数">
         <template #input>
-          <van-stepper v-model="addTeamData.maxNum" max="10" min="3"/>
+          <van-stepper v-model="updateTeamData.maxNum" max="10" min="3"/>
         </template>
       </van-field>
 
@@ -30,11 +30,11 @@
           readonly
           name="datePicker"
           label="时间选择"
-          :placeholder="addTeamData.expireTime ?? '点击选择时间'"
+          :placeholder="updateTeamData.expireTime ?? '点击选择时间'"
           @click="showPicker = true"
       />
       <van-popup v-model:show="showPicker" position="bottom">
-        <van-date-picker  v-model="addTeamData.expireTime"
+        <van-date-picker  v-model="updateTeamData.expireTime"
                           @confirm="showPicker = false"
                           type="datetime"
                           title="请选择过期时间"
@@ -45,7 +45,7 @@
 
       <van-field name="radio" label="单选框">
         <template #input>
-          <van-radio-group v-model="addTeamData.status" direction="horizontal">
+          <van-radio-group v-model="updateTeamData.status" direction="horizontal">
             <van-radio name="1">公开</van-radio>
             <van-radio name="2">加密</van-radio>
             <van-radio name="3">私密</van-radio>
@@ -54,8 +54,8 @@
       </van-field>
 
       <van-field
-          v-if="addTeamData.status === '2'"
-          v-model="addTeamData.password"
+          v-if="updateTeamData.status === '2'"
+          v-model="updateTeamData.password"
           type="password"
           name="队伍密码"
           label="队伍密码"
@@ -74,9 +74,10 @@
 </template>
 
 <script setup>
-import { showToast } from 'vant';
+import {showFailToast, showToast} from 'vant';
 
-import { ref } from 'vue';
+import { ref,onMounted } from 'vue';
+import myAxios from "../plugins/axios";
 const result = ref('');
 const showPicker = ref(false);
 const onConfirm = ({selectedValues}) =>{
@@ -85,23 +86,28 @@ const onConfirm = ({selectedValues}) =>{
 };
 const minDate = new Date(2020, 0, 1);
 const maxDate = new Date(2025, 5, 1);
-const intTeam = {
-  "captainId": 3,
-  "description": "测试描述 ",
-  "expireTime":[2024,10,10],
-  "maxNum": "10",
-  "password": "",
-  "status": 0,
-  "userID":3,
-  "teamName": "测试小队2"
-}
+onMounted(async () =>{
+  const res = await myAxios.get('/team/get',{
+    id: 3
+  })
+  if(res?.code === 0){
+    updateTeamData.value = res.data;
+
+  }
+  else{
+    showFailToast("未获取到队伍信息");
+
+  }
+})
 //自定义队伍添加对象
-const addTeamData = ref(intTeam)
+const updateTeamData = ref()
+
+
 const  doSubmit = async() =>{
   const postData = {
-    ...addTeamData,
-    status:Number(addTeamData.status),
-    expireTime: moment(addTeamData.expireTime).format("YYYY-MM-DD")
+    ...updateTeamData,
+    status:Number(updateTeamData.status),
+    expireTime: moment(updateTeamData.expireTime).format("YYYY-MM-DD")
   }
   const res = await myAxios.post("/team/add",postData)
   if(res?.code === 0){

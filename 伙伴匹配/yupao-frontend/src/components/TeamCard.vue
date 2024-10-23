@@ -26,7 +26,7 @@
     </van-card>
 
   </div>
-  {{currentUser}}
+<!--  {{currentUser}}-->
 <!--  {{team.captainId}}-->
 
 </template>
@@ -54,6 +54,10 @@ const doJoinTeam = async (id:number) =>{
 
 }
 const doUpdateTeam = async(id:number) =>{
+  router.push({
+    path:"/team/edit",
+    query:{'id':id},
+  })
 
 }
 interface TeamCardListProps {

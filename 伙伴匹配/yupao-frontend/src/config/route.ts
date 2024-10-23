@@ -7,7 +7,7 @@ import userEdit from '../pages/userEdit.vue'
 import userList from '../pages/userList.vue'
 import userLogin from '../pages/userLogin.vue'
 import teamAddPage from '../pages/teamAddPage.vue'
-import teamPage from '../pages/teamPage.vue'
+import teamUpdatePage from '../pages/teamUpdatePage.vue'
 
 //定义路由信息
 const routes = [
@@ -20,6 +20,7 @@ const routes = [
     { path: '/user/list', component: userList },
     { path: '/user/login', component: userLogin },
     { path: '/team/add', component: teamAddPage },
+    { path: '/team/edit', component: teamUpdatePage },
 
 ]
 //将当前route文件暴露出去，方便main.js引用
