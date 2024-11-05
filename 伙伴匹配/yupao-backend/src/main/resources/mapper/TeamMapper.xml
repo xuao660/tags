@@ -68,4 +68,31 @@
             #{team.id}
         </foreach>
     </select>
+    <select id="listJoinTeam" resultType="com.yupi.usercenter.model.domain.Team">
+        select  t.id,
+                t.teamName,
+                t.description,
+                t.maxNum,
+                t.expireTime,
+                t.status,
+                t.captainId
+        from team t,userteam ut
+        where ut.teamId = t.id
+        and ut.userId = #{userId}
+        and ifnull(ut.isDelete,0) = 0
+        and ifnull(t.isDelete,0) = 0
+</select>
+    <select id="listCreateTeam" resultType="com.yupi.usercenter.model.domain.Team">
+        select  t.id,
+                t.teamName,
+                t.description,
+                t.maxNum,
+                t.expireTime,
+                t.status,
+                t.captainId
+        from team t
+        where t.userID = #{userId}
+        and ifnull(t.isDelete,0) = 0
+
+    </select>
 </mapper>

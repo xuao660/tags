@@ -1,5 +1,5 @@
 <template>
-  <van-form @submit="onSubmit">
+  <van-form @submit="doSubmit">
     <van-cell-group inset>
       <van-field
           v-model="updateTeamData.teamName"
@@ -18,12 +18,6 @@
           placeholder="队伍描述"
           :rules="[{ required: true, message: '请填写队伍描述' }]"
       />
-      <van-field name="stepper" label="队伍人数">
-        <template #input>
-          <van-stepper v-model="updateTeamData.maxNum" max="10" min="3"/>
-        </template>
-      </van-field>
-
 
       <van-field
           is-link
@@ -34,8 +28,8 @@
           @click="showPicker = true"
       />
       <van-popup v-model:show="showPicker" position="bottom">
-        <van-date-picker  v-model="updateTeamData.expireTime"
-                          @confirm="showPicker = false"
+        <van-date-picker
+                          @confirm="onConfirm"
                           type="datetime"
                           title="请选择过期时间"
                           @cancel="showPicker = false"
@@ -46,9 +40,9 @@
       <van-field name="radio" label="单选框">
         <template #input>
           <van-radio-group v-model="updateTeamData.status" direction="horizontal">
-            <van-radio name="1">公开</van-radio>
+            <van-radio name="0">公开</van-radio>
+            <van-radio name="1">私密</van-radio>
             <van-radio name="2">加密</van-radio>
-            <van-radio name="3">私密</van-radio>
           </van-radio-group>
         </template>
       </van-field>
@@ -70,7 +64,7 @@
       </van-button>
     </div>
   </van-form>
-<!--{{addTeamData}}-->
+<!--{{updateTeamData}}-->
 </template>
 
 <script setup>
@@ -79,19 +73,31 @@ import {showFailToast, showToast} from 'vant';
 import { ref,onMounted } from 'vue';
 import myAxios from "../plugins/axios";
 const result = ref('');
+import {useRoute} from "vue-router";
+
 const showPicker = ref(false);
 const onConfirm = ({selectedValues}) =>{
-  initFormData.expireTime = selectedValues.join("-");
+  console.log('selectedValues:',selectedValues.join("-"))
+  updateTeamData.value.expireTime = selectedValues.join("-");
   showPicker.value = false;
 };
 const minDate = new Date(2020, 0, 1);
 const maxDate = new Date(2025, 5, 1);
+
+//自定义队伍添加对象
+const route = useRoute();
+const id = route.query.id;
+
 onMounted(async () =>{
   const res = await myAxios.get('/team/get',{
-    id: 3
+    params:{
+      id:id
+    }
   })
   if(res?.code === 0){
     updateTeamData.value = res.data;
+    updateTeamData.value.status = updateTeamData.value.status.toString();
+    console.log(updateTeamData.value.expireTime)
 
   }
   else{
@@ -99,25 +105,26 @@ onMounted(async () =>{
 
   }
 })
-//自定义队伍添加对象
-const updateTeamData = ref()
+
+const updateTeamData = ref({})
 
 
-const  doSubmit = async() =>{
-  const postData = {
-    ...updateTeamData,
-    status:Number(updateTeamData.status),
-    expireTime: moment(updateTeamData.expireTime).format("YYYY-MM-DD")
+  const  doSubmit = async() =>{
+    const postData = {
+      ...updateTeamData.value,
+      status:Number(updateTeamData.value.status),
+      // expireTime: moment(updateTeamData.value.expireTime).format("YYYY-MM-DD")
+    }
+  console.log('postData:',postData)
+    const res = await myAxios.post("/team/update",postData)
+    if(res?.code === 0){
+      showToast('更新成功');
+      router.push({
+        path:'team',
+        replace:true
+      })
+    }
   }
-  const res = await myAxios.post("/team/add",postData)
-  if(res?.code === 0){
-    showToast('添加成功');
-    router.push({
-      path:'team',
-      replace:true
-    })
-  }
-}
 </script>
 
 <style scoped>

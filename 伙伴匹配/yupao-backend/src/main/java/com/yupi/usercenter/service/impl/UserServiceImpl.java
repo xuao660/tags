@@ -5,10 +5,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.yupi.usercenter.common.ErrorCode;
+import com.yupi.usercenter.common.MinDistanceUtils;
 import com.yupi.usercenter.exception.BusinessException;
+import com.yupi.usercenter.model.domain.Tag;
 import com.yupi.usercenter.model.domain.User;
 import com.yupi.usercenter.service.UserService;
 import com.yupi.usercenter.mapper.UserMapper;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -23,6 +26,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.yupi.usercenter.contant.UserConstant.ADMIN_ROLE;
 import static com.yupi.usercenter.contant.UserConstant.USER_LOGIN_STATE;
@@ -37,6 +41,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     private UserMapper userMapper;
 @Resource
     StringRedisTemplate stringRedisTemplate;
+
+    private Gson gson = new Gson();
+
 
     /**
      * 盐值，混淆密码
@@ -257,6 +264,51 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
         User user = (User) userObj;
         return user != null && user.getUserRole() == ADMIN_ROLE;
+    }
+
+    @Override
+    public List<User> findUsers(User loginUser,int num) {
+        //优化方法1：只加载tags不为空，或tags包含的指定标签的用户，总之不全部加载到内存中
+        QueryWrapper<User> qw = new QueryWrapper<User>().lt("id", 3000);
+        //优化方法2：只加载需要的字段，不能select *
+        qw.select("id","tags");
+        List<User> users = this.list(qw);
+        String tags1 = loginUser.getTags();
+        List<String> tagList1 = gson.fromJson(tags1, List.class);
+        if(tagList1 == null || tagList1.size() == 0){
+            throw new BusinessException(ErrorCode.NULL_ERROR);
+        }
+        //key是分数，value是id
+        TreeMap<Long, Long> indexDistanceMap = new TreeMap<Long,Long>((a, b)->{
+            //TreeMap通过比较key的值进行排序，返回 0/相等 1/大于 -1/小于 ，相等会将之前的数据覆盖
+           return (a-b) == 0 ? 1 : (int) (a - b);
+        });
+        for(int i= 0;i< users.size();i++){
+            User user = users.get(i);
+            //优化点3：排除掉当前用户
+            if(user == null || user.getId().equals(loginUser.getId())){
+                continue;
+            }
+            String tags2 = user.getTags();
+            List<String> tagList2 = gson.fromJson(tags2, List.class);
+            if(tagList2 == null || tagList2.size() == 0){
+                continue;
+            }
+            long minDistance = MinDistanceUtils.minDistance(tags1, tags2);
+            //优化点4：只将相似度到一定标准的用户加载到内存
+            if(minDistance < 10L){
+                indexDistanceMap.put(minDistance,users.get(i).getId());
+
+            }
+        }
+        //将集合中的前num个符合要求的下标取出来，
+        List<Long> idList = indexDistanceMap.values().stream().limit(num).collect (Collectors.toList());
+        System.out.println(idList.size());
+        List<User> userList = this.listByIds(idList);
+        List<User> safetyUserList = userList.stream()
+                .map(user ->getSafetyUser(user))
+                .collect(Collectors.toList());
+        return safetyUserList;
     }
 
 }

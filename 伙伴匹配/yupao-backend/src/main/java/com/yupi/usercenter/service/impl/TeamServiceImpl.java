@@ -317,7 +317,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team>
         }
 //        4、查询用户是否在队伍中，isDelete = 0
         QueryWrapper<Userteam> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("teamId",teamId).eq("userId",loginUser.getId()).eq("isDelete",0);
+        queryWrapper.eq("teamId",teamId).eq("userId",loginUser.getId());
         Userteam userteam = userteamService.getOne(queryWrapper);
         if(userteam == null){
             throw new BusinessException(ErrorCode.NULL_ERROR,"退出队伍失败");
@@ -366,6 +366,18 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team>
 
         }
 
+    }
+
+    @Override
+    public List<Team> listJoinTeam(Long id) {
+        List<Team> list = teamMapper.listJoinTeam(id);
+        return list;
+    }
+
+    @Override
+    public List<Team> listCreateTeam(Long id) {
+        List<Team> list = teamMapper.listCreateTeam(id);
+        return list;
     }
 
     @Override

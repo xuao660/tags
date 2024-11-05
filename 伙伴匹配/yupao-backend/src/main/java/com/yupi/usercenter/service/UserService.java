@@ -85,4 +85,11 @@ public interface UserService extends IService<User> {
      * @return
      */
      boolean isAdmin(HttpServletRequest request);
+
+    /**
+     * 获取与当前用户匹配度高的用户，倒序排列
+     * @param loginUser
+     * @return
+     */
+    List<User> findUsers(User loginUser,int num);
 }

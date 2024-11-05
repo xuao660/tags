@@ -18,6 +18,7 @@ import com.yupi.usercenter.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -206,5 +207,19 @@ public class UserController {
         return ResultUtils.error(ErrorCode.NO_AUTH);
     }
 
+    /**
+     * 获取匹配用户
+     * @param request
+     * @return
+     */
+    @GetMapping("findUsers")
+    public BaseResponse<List<User>> findUsers(@RequestParam int num , HttpServletRequest request){
+        if(num<0 || num >20){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"匹配用户数不能超过二十");
+        }
+        User loginUser = userService.getLoginUser(request);
+        List<User> users = userService.findUsers(loginUser,num);
+        return ResultUtils.success(users);
+    }
 
 }

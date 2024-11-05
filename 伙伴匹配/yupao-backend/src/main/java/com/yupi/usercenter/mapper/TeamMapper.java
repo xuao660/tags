@@ -18,6 +18,10 @@ import java.util.List;
 public interface TeamMapper extends BaseMapper<Team> {
 
     IPage<TeamUserVO> selectListByTeams(@Param("teams") List<Team> list, Page<TeamUserVO> teamUserPage);
+
+    List<Team> listJoinTeam(@Param("userId")Long id);
+
+    List<Team> listCreateTeam(@Param("userId")Long id);
 }
 
 

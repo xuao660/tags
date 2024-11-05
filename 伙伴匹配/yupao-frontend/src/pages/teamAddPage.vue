@@ -80,7 +80,8 @@ import { ref } from 'vue';
 const result = ref('');
 const showPicker = ref(false);
 const onConfirm = ({selectedValues}) =>{
-  initFormData.expireTime = selectedValues.join("-");
+  console.log('selectedValues:'+selectedValues.join("-"))
+  addTeamData.expireTime = selectedValues.join("-");
   showPicker.value = false;
 };
 const minDate = new Date(2020, 0, 1);

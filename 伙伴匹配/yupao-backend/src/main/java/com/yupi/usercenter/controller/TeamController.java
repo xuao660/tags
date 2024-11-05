@@ -112,7 +112,7 @@ public class TeamController {
         return ResultUtils.success(true);
     }
     @GetMapping("get")
-    public BaseResponse<Team> getTeamById(@RequestBody long id){
+    public BaseResponse<Team> getTeamById(@RequestParam long id){
         //判断参数是否正常
         if(id <= 0){
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -191,6 +191,24 @@ public class TeamController {
         //返回内容
         if(CollectionUtils.isEmpty(list) ){
             throw new BusinessException(ErrorCode.NULL_ERROR,"查询数据为空");
+        }
+        return ResultUtils.success(list);
+    }
+    @GetMapping("listJoinTeam")
+    public BaseResponse<List<Team>> listJoinTeam(HttpServletRequest request){
+        User loginUser = userService.getLoginUser(request);
+        List<Team> list = teamService.listJoinTeam(loginUser.getId());
+        if (CollectionUtils.isEmpty(list)) {
+            throw new BusinessException(ErrorCode.NULL_ERROR);
+        }
+        return ResultUtils.success(list);
+    }
+    @GetMapping("listCreateTeam")
+    public BaseResponse<List<Team>> listCreateTeam(HttpServletRequest request){
+        User loginUser = userService.getLoginUser(request);
+        List<Team> list = teamService.listCreateTeam(loginUser.getId());
+        if (CollectionUtils.isEmpty(list)) {
+            throw new BusinessException(ErrorCode.NULL_ERROR);
         }
         return ResultUtils.success(list);
     }

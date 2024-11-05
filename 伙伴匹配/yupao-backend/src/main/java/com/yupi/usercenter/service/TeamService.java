@@ -25,6 +25,12 @@ public interface TeamService extends IService<Team> {
 
     boolean joinTeam(Long teamId, String password,HttpServletRequest request);
 
+    /**
+     * 退出队伍
+     * @param teamId
+     * @param loginUser
+     * @return
+     */
     boolean exitTeam(Long teamId, User loginUser);
 
     boolean deleteTeam(Long teamId,HttpServletRequest request);
@@ -32,4 +38,8 @@ public interface TeamService extends IService<Team> {
     public void testA(String param);
 
     public void testB(String param);
+
+    List<Team> listJoinTeam(Long id);
+
+    List<Team> listCreateTeam(Long id);
 }

@@ -13,7 +13,7 @@ spring:
     hikari:
       maximum-pool-size: 100
       minimum-idle: 10
-      connection-timeout: 30000
+      connection-timeout: 3000000
       idle-timeout: 60000
       max-lifetime: 1800000
     #    driver-class-name: com.mysql.jdbc.Driver
